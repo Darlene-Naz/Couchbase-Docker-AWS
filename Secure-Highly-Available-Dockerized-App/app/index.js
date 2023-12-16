@@ -1,39 +1,51 @@
-const express = require("express");
 const path = require("path");
-const fs = require("fs");
-var cors = require('cors')
-var couchbase = require('couchbase')
+var cors = require('cors');
+var express = require('express');
+var couchbase = require('couchbase');
 
-// Create a Couchbase Cluster connection
-const CB = {
-  host: process.env.CB_HOST || 'localhost',
-  username: process.env.CB_USER || 'Administrator',
-  password: process.env.CB_PASS || 'couchbase'
+var cluster;
+
+
+// Function to get random documents
+async function getFiveDocuments() {
+  const query = 'SELECT * from `wikipedia-data` limit 5;';
+  try {
+    const result = await cluster.query(query);
+    const documents = result.rows.map(row => row[Object.keys(row)[0]]);
+    return documents;
+  } catch (error) {
+    console.error('Error retrieving random documents:', error);
+    throw error;
+  }
 }
 
 const app = express();
 const PORT = process.env.PORT || 3000; // For testing locally
 const SERVER_ID = process.env.SERVER_ID || 2; // For testing locally
 
-app.use("/static", express.static(path.join(__dirname, "static")));
+app.use(cors('*'))
 
 app.get("/", (req, res) => {
-  console.log({ server: SERVER_ID, port: PORT });
-  let file = fs.readFileSync(
-    path.join(__dirname, "/static/index.html"),
-    "utf8"
-  );
-  file = file.replace(
-    "Darlene",
-    '{ SERVER_ID: <span style="color:yellow">' +
-      SERVER_ID +
-      '</span>, PORT: <span style="color:yellow">' +
-      PORT +
-      "</span> }"
-  );
-  res.send(file);
+  let serverDetails = { server: SERVER_ID, port: PORT };
+  getFiveDocuments().then((data) => {
+    let obj = { ...serverDetails, data: data}
+    res.json(obj); 
+  });
 });
 
-app.listen(PORT, function () {
+app.listen(PORT, async function () {
   console.log(`Server ${SERVER_ID} running at ${PORT}`);
+
+  const clusterConnStr = "couchbases://cb.x6jbuo5u3ob2my.cloud.couchbase.com";
+  const username = "app"; 
+  const password = process.env.PASSWORD || 'password';
+  const bucketName = "wikipedia-data";
+  const scopeName = "_default";
+  const collectionName = "_default ";
+
+  cluster = await couchbase.connect(clusterConnStr, {
+  username: username,
+  password: password,
+  });
+  const bucket = cluster.bucket(bucketName);
 });

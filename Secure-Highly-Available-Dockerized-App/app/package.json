@@ -1,18 +1,16 @@
 {
-  "name": "dual-load-balancing-with-aws-and-docker",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "dev": "node ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Darlene, Rachel, Anup",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "cors": "~2.8.1",
-    "couchbase": "^3.2.4",
-    "body-parser": "^1.19.0"
+    "cors": "^2.8.5",
+    "couchbase": "^4.2.8",
+    "express": "^4.18.2"
   }
 }
