@@ -1,5 +1,5 @@
 {
-  "name": "dual-load-balancing-with-aws-and-docker",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

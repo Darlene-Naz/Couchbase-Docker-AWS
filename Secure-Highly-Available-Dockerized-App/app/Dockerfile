@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:20-alpine3.19
 
 RUN mkdir -p /home/ec2-user/app/node_modules && chown -R node:node /home/ec2-user/app
 
