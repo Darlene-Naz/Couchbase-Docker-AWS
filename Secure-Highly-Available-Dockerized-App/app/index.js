@@ -54,7 +54,7 @@ app.listen(PORT, async function () {
 
   const clusterConnStr = "couchbases://cb.x6jbuo5u3ob2my.cloud.couchbase.com";
   const username = "app"; 
-  const password = process.env.PASSWORD || 'Password';
+  const password = process.env.PASSWORD || 'Elephant01!';
   const bucketName = "wikipedia-data";
   const scopeName = "_default";
   const collectionName = "_default ";

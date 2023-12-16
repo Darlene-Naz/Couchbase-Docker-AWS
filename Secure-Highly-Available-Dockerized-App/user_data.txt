@@ -1,5 +1,5 @@
 # install docker, -y for silent installation
-sudo amazon-linux-extras install -y docker
+sudo yum install docker
 sudo yum install git
 
 # start the docker service
