@@ -10,6 +10,9 @@
   "author": "Darlene, Rachel, Anup",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "cors": "~2.8.1",
+    "couchbase": "^3.2.4",
+    "body-parser": "^1.19.0"
   }
 }

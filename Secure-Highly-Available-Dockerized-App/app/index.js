@@ -1,6 +1,15 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+var cors = require('cors')
+var couchbase = require('couchbase')
+
+// Create a Couchbase Cluster connection
+const CB = {
+  host: process.env.CB_HOST || 'localhost',
+  username: process.env.CB_USER || 'Administrator',
+  password: process.env.CB_PASS || 'couchbase'
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000; // For testing locally
