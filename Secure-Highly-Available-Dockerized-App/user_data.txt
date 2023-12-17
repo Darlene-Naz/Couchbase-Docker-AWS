@@ -1,6 +1,5 @@
 # install docker, -y for silent installation
-sudo amazon-linux-extras install -y docker
-sudo yum install git
+sudo yum install docker git nodejs
 
 # start the docker service
 sudo service docker start
@@ -20,8 +19,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 # add nodejs yum repo and install nodejs and npm
 sudo yum install -y gcc-c++ make
-curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
-sudo yum install -y nodejs
+curl -sL https://rpm.nodesource.com/setup_20.x | sudo -E bash -
 
 # reboot server
 sudo reboot
@@ -30,3 +28,8 @@ sudo reboot
 ## Test installation success
 docker-compose version
 
+git clone https://github.com/Darlene-Naz/Couchbase-Docker-AWS.git
+
+cd Couchbase-Docker-AWS/Secure-Highly-Available-Dockerized-App
+
+SERVER_ID=1 PASSWORD=Elephant01! docker-compose --log-level INFO up -d
