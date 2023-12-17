@@ -8,8 +8,8 @@ var bodyParser = require("body-parser");
 var cluster;
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-async function getFiveDocuments() {
-  const query = "SELECT * from `wikipedia-data` limit 5;";
+async function getOneDocument() {
+  const query = "SELECT * from `wikipedia-data` limit 1;";
   try {
     const result = await cluster.query(query);
     const documents = result.rows.map((row) => row[Object.keys(row)[0]]);
@@ -54,12 +54,13 @@ app.post("/", urlencodedParser, (req, res) => {
         SERVER_ID +
         '</span>, PORT: <span style="color:yellow">' +
         PORT +
-        "</span>  }<br><br>"
+        "</span>  }<br>"
     );
-    file = file.replace(
-      "The Output is:",
-        JSON.stringify(obj, null, 4)
-    );
+    file =
+      file.replace(
+        "The Output is:",
+        "<pre class='output'><code>" + JSON.stringify(obj, null, 4)
+      ) + "</code></pre>";
     res.send(file);
   });
 });
@@ -70,7 +71,7 @@ app.get("/", (req, res) => {
     "utf8"
   );
 
-  getFiveDocuments().then((data) => {
+  getOneDocument().then((data) => {
     let obj = { data: data };
     file = file.replace(
       "Darlene",
@@ -78,9 +79,9 @@ app.get("/", (req, res) => {
         SERVER_ID +
         '</span>, PORT: <span style="color:yellow">' +
         PORT +
-        "</span>  }<br><br><p id='#output'>" +
+        "</span>  }<br><pre id='json' class='output'><code>" +
         JSON.stringify(obj, null, 4) +
-        "</p>"
+        "</code></pre>"
     );
     res.send(file);
   });
