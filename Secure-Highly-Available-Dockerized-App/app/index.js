@@ -3,12 +3,26 @@ var cors = require('cors');
 var express = require('express');
 var couchbase = require('couchbase');
 const fs = require("fs");
+var bodyParser = require('body-parser')
 
 var cluster;
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 
 async function getFiveDocuments() {
   const query = 'SELECT * from `wikipedia-data` limit 5;';
+  try {
+    const result = await cluster.query(query);
+    const documents = result.rows.map(row => row[Object.keys(row)[0]]);
+    return documents;
+  } catch (error) {
+    console.error('Error retrieving random documents:', error);
+    throw error;
+  }
+}
+
+async function executeQuery(query) {
   try {
     const result = await cluster.query(query);
     const documents = result.rows.map(row => row[Object.keys(row)[0]]);
@@ -27,26 +41,32 @@ app.use(cors('*'));
 
 app.use("/static", express.static(path.join(__dirname, "static")));
 
-
-app.get("/", (req, res) => {
-  console.log({ server: SERVER_ID, port: PORT });
+app.post("/", urlencodedParser, (req, res) => {
+  let query = req.body.inputData;
   let file = fs.readFileSync(
     path.join(__dirname, "/static/index.html"),
     "utf8"
   );
-
-  getFiveDocuments().then((data) => {
+  executeQuery(query).then((data) => {
     let obj = {data: data};
     file = file.replace(
-      "Darlene",
+      "Hello!",
       '{ SERVER_ID: <span style="color:yellow">' +
         SERVER_ID +
         '</span>, PORT: <span style="color:yellow">' +
         PORT +
-        "</span>  }" + JSON.stringify(obj, null, 4)
+        "</span>  }<br>" + JSON.stringify(obj, null, 4)
     );
     res.send(file);
   });
+});
+
+app.get("/", (req, res) => {
+  let file = fs.readFileSync(
+    path.join(__dirname, "/static/index.html"),
+    "utf8"
+  );
+  res.send(file);
 });
 
 app.listen(PORT, async function () {
