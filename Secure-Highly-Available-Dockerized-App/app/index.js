@@ -45,14 +45,26 @@ app.post("/", urlencodedParser, (req, res) => {
     path.join(__dirname, "/static/index.html"),
     "utf8"
   );
+
   executeQuery(query).then((data) => {
     let obj = { data: data };
-    document.getElementById("#output").innerHTML = JSON.stringify(obj, null, 4);
+    file = file.replace(
+      "Darlene",
+      '{ SERVER_ID: <span style="color:yellow">' +
+        SERVER_ID +
+        '</span>, PORT: <span style="color:yellow">' +
+        PORT +
+        "</span>  }<br><br>"
+    );
+    file = file.replace(
+      "The Output is:",
+        JSON.stringify(obj, null, 4)
+    );
+    res.send(file);
   });
 });
 
 app.get("/", (req, res) => {
-  console.log({ server: SERVER_ID, port: PORT });
   let file = fs.readFileSync(
     path.join(__dirname, "/static/index.html"),
     "utf8"
