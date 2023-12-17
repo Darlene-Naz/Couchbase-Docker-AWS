@@ -53,16 +53,40 @@
         fill="transparent"
       />
     </svg>
-    <!-- <script type="text/javascript" src="/static/sketch.js"></script> -->
+    <script type="text/javascript" src="/static/sketch.js"></script>
     <div class="print">
-      Hello!
-      <form id="myForm" action="/" method="post" enctype="application/x-www-form-urlencoded">
+      Darlene
+      <button
+        style="position: relative; margin-left: auto; margin-right: auto"
+        class="btn second"
+        type="button"
+        onclick="location.reload();"
+      >
+        Refresh
+      </button>
+      <form
+        id="myForm"
+        action="/"
+        method="post"
+        enctype="application/x-www-form-urlencoded"
+      >
         <label for="inputData">Enter Query:</label>
-        <input type="textarea" id="inputData" name="inputData" size="50" required>
-        <br>
+        <input
+          type="textarea"
+          id="inputData"
+          name="inputData"
+          size="50"
+          required
+        />
+        <br />
         <button type="submit">Submit</button>
       </form>
     </div>
-</body>
-
+  </body>
+  <script>
+    const form = document.getElementById("myForm");
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+    });
+  </script>
 </html>
